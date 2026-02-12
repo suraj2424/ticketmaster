@@ -2,16 +2,22 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"github.com/suraj2424/db"
+	"github.com/suraj2424/ticketmaster/db"
 	"github.com/joho/godotenv"
 )
 
 func main(){
-	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request){
-		fmt.Println("Hello  Suraj")
+	godotenv.Load()
+
+	db.ConnectDB()
+	defer db.Pool.Close()
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w ,"Hello Suraj")
 	})
 
-	fmt.Println("Server starting on http://localhost:8000")
-	http.ListenAndServe(":8000", nil)
+	fmt.Println("Backend running on http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
+
 }
 
